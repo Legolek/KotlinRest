@@ -13,10 +13,21 @@ class TestController {
     @RequestMapping("/")
     fun getResponse() = ResponseDto(true, "Test message")
 
+    private val INVALID_PARAM = "Invalid paramater"
+
     @RequestMapping("/month")
-    fun mapMonth(@RequestParam nbr: Int) = when(nbr) {
-        1 -> ResponseDto(true, "January")
-        2 -> ResponseDto(true, "February")
-        else -> ResponseDto(false, "Invalid paramater")
+    fun mapMonth(@RequestParam nbr: Int): ResponseDto {
+        var strMonth = when (nbr) {
+            1 -> "January"
+            2 -> "February"
+            3 -> "March"
+            else -> INVALID_PARAM
+        }
+        if (INVALID_PARAM === strMonth) {
+            return ResponseDto(false, INVALID_PARAM)
+        } else {
+            return ResponseDto(true, "Converted month is $strMonth")
+        }
     }
+
 }
